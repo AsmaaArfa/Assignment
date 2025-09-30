@@ -23,7 +23,7 @@ class main():
         cls.df_out = pd.merge(cls.employee_df, cls.plan_df, on='employeeId', how='inner').sort_values(
             by=['LastName', 'YearlySalary'], ascending=[False, True]
         )
-        # print(cls.df_out)
+        print(cls.df_out)
         cls.df_out.to_json(f'{cls.path}/employee_data.json', orient='records', indent=4)
 
     @classmethod
