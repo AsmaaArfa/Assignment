@@ -33,7 +33,7 @@ class main():
             .query("P_Ref_Num.isnull()")
             .sort_values(by=['YearlySalary', 'LastName'], ascending=[False, True])
         )
-        # print(cls.df_out)
+        print(cls.df_out)
         cls.df_out.to_json(f'{cls.path}/unenrolled_employee.json', orient='records', indent=4)
 
 main.read_data()
