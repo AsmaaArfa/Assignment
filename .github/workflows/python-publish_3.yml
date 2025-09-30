@@ -74,4 +74,4 @@ jobs:
         with:
           packages-dir: Assignment-2a/dist/
           user: __token__
-          password: ${{ pypi-AgEIcHlwaS5vcmcCJDUzYTIxNjUyLTc0YWItNGY2Ni1iY2FiLTZjYWY2MzBmN2E4NgACKlszLCJlYzE0NzBlNS02OTBlLTQ5NDAtYmYyYi03YmVlZjcyODg0ZDAiXQAABiBxES86-OSfiLs0DMspYTD0tnlFookuzAw787AQnlaEXg }}
+          password: ${{ secrets.PYPI_API_TOKEN }}
