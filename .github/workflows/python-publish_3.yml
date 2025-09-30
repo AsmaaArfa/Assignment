@@ -33,7 +33,7 @@ jobs:
       - name: Build release distributions
         run: |
           # NOTE: put your own distribution build steps here.
-          cd Assignment-2a
+          cd Desktop/ASD-Course/Assignment_lab/Assignment-2a
           python -m pip install build
           python -m build
 
