@@ -1,0 +1,30 @@
+[
+    {
+        "ProductId":"29274582650152700000.00",
+        "Name":"Apple",
+        "DateSupplied":"12\/9\/24",
+        "QuantityInStock":18,
+        "UnitPrice":1.09
+    },
+    {
+        "ProductId":"31288741190182500000.00",
+        "Name":"Banana",
+        "DateSupplied":"2\/13\/25",
+        "QuantityInStock":240,
+        "UnitPrice":0.65
+    },
+    {
+        "ProductId":"31288741190182500000.00",
+        "Name":"Banana",
+        "DateSupplied":"1\/24\/25",
+        "QuantityInStock":124,
+        "UnitPrice":0.55
+    },
+    {
+        "ProductId":"91899274600128100000.00",
+        "Name":"Carrot",
+        "DateSupplied":"3\/31\/25",
+        "QuantityInStock":89,
+        "UnitPrice":2.99
+    }
+]

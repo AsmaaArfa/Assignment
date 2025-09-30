@@ -1,0 +1,31 @@
+<?xml version='1.0' encoding='utf-8'?>
+<data>
+  <row>
+    <ProductId>29274582650152700000.00</ProductId>
+    <Name>Apple</Name>
+    <DateSupplied>12/9/24</DateSupplied>
+    <QuantityInStock>18</QuantityInStock>
+    <UnitPrice>1.09</UnitPrice>
+  </row>
+  <row>
+    <ProductId>31288741190182500000.00</ProductId>
+    <Name>Banana</Name>
+    <DateSupplied>2/13/25</DateSupplied>
+    <QuantityInStock>240</QuantityInStock>
+    <UnitPrice>0.65</UnitPrice>
+  </row>
+  <row>
+    <ProductId>31288741190182500000.00</ProductId>
+    <Name>Banana</Name>
+    <DateSupplied>1/24/25</DateSupplied>
+    <QuantityInStock>124</QuantityInStock>
+    <UnitPrice>0.55</UnitPrice>
+  </row>
+  <row>
+    <ProductId>91899274600128100000.00</ProductId>
+    <Name>Carrot</Name>
+    <DateSupplied>3/31/25</DateSupplied>
+    <QuantityInStock>89</QuantityInStock>
+    <UnitPrice>2.99</UnitPrice>
+  </row>
+</data>
