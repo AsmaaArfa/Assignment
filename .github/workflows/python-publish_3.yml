@@ -1,13 +1,6 @@
-# This workflow will upload a Python Package to PyPI when a release is created
-# For more information see: https://docs.github.com/en/actions/automating-builds-and-tests/building-and-testing-python#publishing-to-package-registries
+name: Build and Publish Python Package
 
-# This workflow uses actions that are not certified by GitHub.
-# They are provided by a third-party and are governed by
-# separate terms of service, privacy policy, and support
-# documentation.
-
-name: Upload Python Package
-
+# Trigger on push or pull request to main
 on:
   push:
     branches:
@@ -20,58 +13,29 @@ permissions:
   contents: read
 
 jobs:
-  release-build:
+  build-and-publish:
     runs-on: ubuntu-latest
 
     steps:
+      # 1️⃣ Checkout the repository
       - uses: actions/checkout@v4
 
+      # 2️⃣ Setup Python
       - uses: actions/setup-python@v5
         with:
           python-version: "3.x"
 
-      - name: Build release distributions
+      # 3️⃣ Build the Python package
+      - name: Build package
         run: |
-          # NOTE: put your own distribution build steps here.
-          cd Desktop/ASD-Course/Assignment_lab/Assignment-2a
-          python -m pip install build
-          python -m build
+          python -m pip install --upgrade pip build
+          cd Assignment-2a           # <-- path to your package folder in repo
+          python -m build            # creates dist/
 
-      - name: Upload distributions
-        uses: actions/upload-artifact@v4
-        with:
-          name: release-dists
-          path: Assignment-2a/dist/
-
-  pypi-publish:
-    runs-on: ubuntu-latest
-    needs:
-      - release-build
-    permissions:
-      # IMPORTANT: this permission is mandatory for trusted publishing
-      id-token: write
-
-    # Dedicated environments with protections for publishing are strongly recommended.
-    # For more information, see: https://docs.github.com/en/actions/deployment/targeting-different-environments/using-environments-for-deployment#deployment-protection-rules
-    environment:
-      name: pypi
-      # OPTIONAL: uncomment and update to include your PyPI project URL in the deployment status:
-      # url: https://pypi.org/p/YOURPROJECT
-      #
-      # ALTERNATIVE: if your GitHub Release name is the PyPI project version string
-      # ALTERNATIVE: exactly, uncomment the following line instead:
-      # url: https://pypi.org/project/YOURPROJECT/${{ github.event.release.name }}
-
-    steps:
-      - name: Retrieve release distributions
-        uses: actions/download-artifact@v4
-        with:
-          name: release-dists
-          path: Assignment-2a/dist/
-
-      - name: Publish release distributions to PyPI
+      # 4️⃣ Publish to PyPI
+      - name: Publish to PyPI
         uses: pypa/gh-action-pypi-publish@release/v1
         with:
-          packages-dir: Assignment-2a/dist/
-          user: __token__
-          password: ${{ secrets.PYPI_API_TOKEN }}
+          user: __token__                        # fixed username for API token
+          password: ${{ secrets.PYPI_API_TOKEN }} # your PyPI API token stored in GitHub secrets
+          packages-dir: Assignment-2a/dist/      # folder with .whl and .tar.gz files
