@@ -33,6 +33,7 @@ jobs:
       - name: Build release distributions
         run: |
           # NOTE: put your own distribution build steps here.
+          cd /Users/asmaahesham/Desktop/ASD-Course/Assignment_lab/Assignment-2a
           python -m pip install build
           python -m build
 
@@ -66,7 +67,7 @@ jobs:
         uses: actions/download-artifact@v4
         with:
           name: release-dists
-          path: dist/
+          path: .Assignment-2a/dist/
 
       - name: Publish release distributions to PyPI
         uses: pypa/gh-action-pypi-publish@release/v1
