@@ -38,4 +38,4 @@ jobs:
         with:
           user: __token__                        # fixed username for API token
           password: ${{ secrets.PYPI_API_TOKEN }} # your PyPI API token stored in GitHub secrets
-          packages-dir: Assignment-2a/dist/      # folder with .whl and .tar.gz files
+          packages-dir: Desktop/ASD-Course/Assignment_lab/Assignment-2a/dist/      # folder with .whl and .tar.gz files
