@@ -4,9 +4,9 @@ from pydantic import BaseModel, Field, field_validator
 from datetime import date, datetime
 
 class product(BaseModel):
-    productID : int = Field(...)
-    name: str | None = Field(None)
-    DateSupplied: date | None = Field(None)
+    ProductId : int = Field(...)
+    Name: str | None = Field(None)
+    DateSupplied: str | None = Field(None)
     QuantityInStock: int | None = Field(default=0)
     UnitPrice: float = Field(...)
 
@@ -46,5 +46,9 @@ class product(BaseModel):
     def QuantityInStock(self , value: int):
         self._QuantityInStock = value
 
-
+    @field_validator('DateSupplied')
+    def check_DateSupplied(cls, value) -> str:
+        _date = datetime.strptime(value, "%m/%d/%y").date()
+        return str(_date)
+        
 
