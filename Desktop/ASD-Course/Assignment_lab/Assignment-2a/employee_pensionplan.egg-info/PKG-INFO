@@ -1,0 +1,22 @@
+Metadata-Version: 2.4
+Name: employee-pensionplan
+Version: 0.1.0
+Summary: Employee-PensionPlan Python package
+Home-page: https://github.com/AsmaaArfa/ASD_MIU.git
+Author: Asmaa Hesham
+Classifier: Programming Language :: Python :: 3
+Classifier: License :: OSI Approved :: MIT License
+Requires-Python: >=3.8
+Description-Content-Type: text/markdown
+Requires-Dist: pandas
+Requires-Dist: pydantic
+Dynamic: author
+Dynamic: classifier
+Dynamic: description
+Dynamic: description-content-type
+Dynamic: home-page
+Dynamic: requires-dist
+Dynamic: requires-python
+Dynamic: summary
+
+Employee-PensionPlan Python package
