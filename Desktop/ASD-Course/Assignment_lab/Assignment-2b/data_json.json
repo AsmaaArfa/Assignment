@@ -1,0 +1,52 @@
+[
+    {
+        "PatientId":2,
+        "FirstName":"Ana",
+        "LastName":"Smith",
+        "PhoneNo":null,
+        "Email":"amsith@te.edu",
+        "MailingAddr":null,
+        "DateofBirth":-665020800000,
+        "age":77
+    },
+    {
+        "PatientId":1,
+        "FirstName":"Daniel",
+        "LastName":"Agar",
+        "PhoneNo":"(641) 123-0009",
+        "Email":"dagar@m.as",
+        "MailingAddr":"1 N Street",
+        "DateofBirth":538012800000,
+        "age":38
+    },
+    {
+        "PatientId":4,
+        "FirstName":"Jeff",
+        "LastName":"Goldbloom",
+        "PhoneNo":"(999) 165-1192",
+        "Email":"jgold@es.co.za",
+        "MailingAddr":null,
+        "DateofBirth":793929600000,
+        "age":30
+    },
+    {
+        "PatientId":3,
+        "FirstName":"Marcus",
+        "LastName":"Garvey",
+        "PhoneNo":"(123) 292-0018",
+        "Email":null,
+        "MailingAddr":"4 East Ave",
+        "DateofBirth":1000771200000,
+        "age":24
+    },
+    {
+        "PatientId":5,
+        "FirstName":"Mary",
+        "LastName":"Washington",
+        "PhoneNo":null,
+        "Email":null,
+        "MailingAddr":"30 W Burlington",
+        "DateofBirth":1685491200000,
+        "age":2
+    }
+]
