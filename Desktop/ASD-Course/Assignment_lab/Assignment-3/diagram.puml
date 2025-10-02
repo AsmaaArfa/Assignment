@@ -1,0 +1,102 @@
+@startuml ADS_Appointment_System
+' UML class diagram for ADS appointment system
+hide circle
+skinparam classAttributeIconSize 0
+
+class OfficeManager {
+}
+
+class UserAccount {
+  - username: String
+  - passwordHash: String
+  - role: String
+  + signIn(): boolean
+}
+
+class Dentist {
+  - dentistId: String
+  - firstName: String
+  - lastName: String
+  - phone: String
+  - email: String
+  - specialization: String
+  + signIn(): boolean
+  + viewAppointments(): List<Appointment>
+}
+
+class Patient {
+  - patientId: String
+  - firstName: String
+  - lastName: String
+  - phone: String
+  - email: String
+  - address: String
+  - dateOfBirth: Date
+  + signIn(): boolean
+  + requestAppointment(req: AppointmentRequest): boolean
+  + cancelAppointment(a: Appointment): boolean
+}
+
+class Surgery {
+  - surgeryId: String
+  - name: String
+  - address: String
+  - phone: String
+}
+
+class Appointment {
+  - appointmentId: String
+  - date: Date
+  - time: Time
+  - status: String
+  - createdAt: DateTime
+  + confirm(): void
+  + cancel(): void
+}
+
+class AppointmentRequest {
+  - requestId: String
+  - requestedDate: Date
+  - requestedTime: Time
+  - source: String
+  - createdAt: DateTime
+}
+
+class Bill {
+  - billId: String
+  - patientId: String
+  - amount: Decimal
+  - dueDate: Date
+  - paid: Boolean
+}
+
+' Associations
+OfficeManager --|> UserAccount : manages
+Dentist --|> UserAccount : has
+Patient --|> UserAccount : has
+
+Dentist "1" o-- "*" Appointment : provides
+Patient "1" o-- "*" Appointment : books
+Surgery "1" o-- "*" Appointment : hosts
+
+AppointmentRequest "*" --> "1" Patient : requestedBy
+AppointmentRequest "*" --> "1" Dentist : requestedFor
+Appointment "1" --> "0..1" AppointmentRequest : createdFrom
+
+Patient "1" o-- "*" Bill : billedFor
+
+' Constraints and notes
+' note top of Dentist
+'   Constraint: Dentist cannot have more than 5 appointments per week
+' end note
+
+' note top of Patient
+'   Constraint: Patient cannot request a new appointment
+'   if they have an outstanding unpaid Bill
+' end note
+
+' Navigation helpers
+Dentist --> Appointment : view
+Patient --> Appointment : view
+
+@enduml
