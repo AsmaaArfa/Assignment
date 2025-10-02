@@ -2,7 +2,7 @@ from setuptools import setup, find_packages
 
 setup(
     name="employee-pensionplan",       # Your package name
-    version="0.1.3",                   # Version number
+    version="0.1.4",                   # Version number
     packages=find_packages(),          # Automatically find packages
     install_requires=[
         "pandas","pydantic"                      # Add other dependencies here
