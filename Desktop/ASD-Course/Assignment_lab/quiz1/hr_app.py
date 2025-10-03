@@ -55,7 +55,7 @@ class Employee:
             'dateOfBirth': self.dateOfBirth.isoformat(),
             'dateOfEmployment': self.dateOfEmployment.isoformat(),
             'biweeklySalary': str(self.biweeklySalary),
-            'annualSalary': str(self.annual_salary()),
+            'annual_salary': str(self.annual_salary()),
         }
 
     def to_dict_with_department(self) -> Dict:
@@ -65,34 +65,58 @@ class Employee:
         return d
 
 
-# Sample data builder
-def build_sample_data():
-    # Departments (using big numeric ids as in the prompt)
-    sales = Department(31288741190182539912, 'Sales')
-    marketing = Department(29274582650152771644, 'Marketing')
-    engineering = Department(1001, 'Engineering')
-    hr = Department(1002, 'HR')
+# Data loader
+def load_data_from_file(path: str = 'hr_data.json'):
+    """Load departments and employees from a JSON file and construct objects.
+    Enforces: every employee's department must exist. If headEmployeeNo is present,
+    the referenced employee must belong to that department; otherwise a warning is issued
+    and the head is left as None.
+    """
+    with open(path, 'r') as f:
+        raw = json.load(f)
 
-    # Employees
-    e1 = Employee('000-11-0987', 'Alice', 'Zephyr', date(1985, 4, 12), date(2010, 6, 1), Decimal('2500.75'))
-    e2 = Employee('000-61-1234', 'Bob', 'Young', date(1990, 8, 3), date(2015, 9, 15), Decimal('3750.99'))
-    e3 = Employee('000-22-3333', 'Carol', 'Xavier', date(1982, 1, 20), date(2005, 3, 20), Decimal('4200.00'))
-    e4 = Employee('000-33-4444', 'David', 'Wong', date(1992, 11, 2), date(2018, 1, 10), Decimal('1800.50'))
-    e5 = Employee('000-44-5555', 'Eve', 'Vega', date(1979, 7, 9), date(2000, 7, 1), Decimal('5000.00'))
+    # Create Department objects keyed by departmentNo (string)
+    dept_map: Dict[str, Department] = {}
+    for d in raw.get('departments', []):
+        dept_no = d['departmentNo']
+        dept = Department(int(dept_no), d.get('name', ''), employees=[], head=None)
+        dept_map[dept_no] = dept
 
-    # Assign departments and add to lists
-    for emp, dept in [(e1, sales), (e2, marketing), (e3, engineering), (e4, sales), (e5, engineering)]:
-        emp.department = dept
+    # Create Employee objects
+    emp_map: Dict[str, Employee] = {}
+    employees: List[Employee] = []
+    for e in raw.get('employees', []):
+        dept_no = e['departmentNo']
+        if dept_no not in dept_map:
+            raise ValueError(f"Employee {e['employeeNo']} references unknown department {dept_no}")
+
+        dept = dept_map[dept_no]
+        emp = Employee(
+            e['employeeNo'],
+            e['firstName'],
+            e['lastName'],
+            date.fromisoformat(e['dateOfBirth']),
+            date.fromisoformat(e['dateOfEmployment']),
+            Decimal(str(e['biweeklySalary'])),
+            department=dept,
+        )
         dept.employees.append(emp)
+        emp_map[emp.employeeNo] = emp
+        employees.append(emp)
 
-    # Assign heads (leave HR with no head to show vacancy)
-    sales.head = e1        # Alice is head of Sales
-    marketing.head = e2    # Bob is head of Marketing
-    engineering.head = e5  # Eve is head of Engineering
-    # hr.head remains None
+    # Assign heads if valid
+    for d in raw.get('departments', []):
+        dept_no = d['departmentNo']
+        head_emp_no = d.get('headEmployeeNo')
+        if head_emp_no:
+            head = emp_map.get(head_emp_no)
+            if head and head.department.departmentNo == int(dept_no):
+                dept_map[dept_no].head = head
+            else:
+                # Head reference invalid: either employee doesn't exist or belongs to different dept
+                print(f"Warning: headEmployeeNo {head_emp_no} for department {dept_no} is invalid or not in that department; leaving head as None")
 
-    departments = [sales, marketing, engineering, hr]
-    employees = [e1, e2, e3, e4, e5]
+    departments = list(dept_map.values())
     return departments, employees
 
 
@@ -111,7 +135,7 @@ def employees_json(employees: List[Employee]) -> str:
 
 
 if __name__ == '__main__':
-    deps, emps = build_sample_data()
+    deps, emps = load_data_from_file('hr_data.json')
 
     print('\n--- Departments (sorted by total annual salary desc) ---\n')
     print(departments_json(deps))

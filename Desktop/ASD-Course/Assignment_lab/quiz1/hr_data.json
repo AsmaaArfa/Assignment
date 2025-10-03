@@ -1,0 +1,57 @@
+{
+  "departments": [
+    {
+      "departmentNo": "31288741190182539912",
+      "name": "Sales",
+      "headEmployeeNo": "000-61-0987"
+    },
+    {
+      "departmentNo": "29274582650152771644",
+      "name": "Marketing",
+      "headEmployeeNo": null
+    },
+    {
+      "departmentNo": "29274599650152771609",
+      "name": "Engineering",
+      "headEmployeeNo": "000-11-1234"
+    }
+  ],
+  "employees": [
+    {
+      "employeeNo": "000-11-1234",
+      "firstName": "Michael",
+      "lastName": "Philips",
+      "dateOfBirth": "1995-12-31",
+      "dateOfEmployment": "2021-10-15",
+      "biweeklySalary": "2750.50",
+      "departmentNo": "29274599650152771609"
+    },
+    {
+      "employeeNo": "000-61-0987",
+      "firstName": "Anna",
+      "lastName": "Smith",
+      "dateOfBirth": "1981-09-17",
+      "dateOfEmployment": "2022-08-21",
+      "biweeklySalary": "2500.00",
+      "departmentNo": "29274582650152771644"
+    },
+    {
+      "employeeNo": "000-99-1766",
+      "firstName": "John",
+      "lastName": "Hammonds",
+      "dateOfBirth": "2001-07-15",
+      "dateOfEmployment": "2025-01-23",
+      "biweeklySalary": "1560.75",
+      "departmentNo": "31288741190182539912"
+    },
+    {
+      "employeeNo": "000-41-1768",
+      "firstName": "Barbara",
+      "lastName": "Jones",
+      "dateOfBirth": "2000-11-18",
+      "dateOfEmployment": "2025-03-13",
+      "biweeklySalary": "1650.55",
+      "departmentNo": "29274582650152771644"
+    }
+  ]
+}
