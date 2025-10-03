@@ -1,0 +1,34 @@
+@startuml
+' HR Management domain model
+skinparam classAttributeIconSize 0
+
+class Department {
+  - departmentNo: Long
+  - name: String
+  --
+  + getEmployees(): List<Employee>
+  + getHead(): Employee?
+  + totalAnnualSalary(): BigDecimal
+}
+
+class Employee {
+  - employeeNo: String
+  - firstName: String
+  - lastName: String
+  - dateOfBirth: Date
+  - dateOfEmployment: Date
+  - biweeklySalary: BigDecimal
+  --
+  + annualSalary(): BigDecimal
+}
+
+' Associations
+Department "1" o-- "0..*" Employee : employs
+' Head of department: optional one Employee who is head (may be vacant)
+Department "0..1" --> "1" Employee : head
+' The head is also one of the employees in that department (constraint / note)
+
+' Multiplicity contract: every Employee MUST belong to exactly one Department
+Employee "1" --> "1" Department : belongsTo
+
+@enduml
