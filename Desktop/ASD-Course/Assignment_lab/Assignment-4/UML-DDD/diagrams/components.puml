@@ -1,0 +1,53 @@
+' Component diagram for ADS
+@startuml ads_components
+skinparam componentStyle uml2
+
+package "Web Client" {
+  component "React SPA\n(React, TypeScript)" as WebUI
+  component "Static Site\n(Next.js/Vercel)" as StaticSite
+}
+
+package "API / Backend" {
+  component "API Gateway\n(NGINX / Traefik)" as Gateway
+  component "Auth Service\n(FastAPI + OAuth2/JWT)" as Auth
+  component "Appointment Service\n(FastAPI, cron, business rules)" as Appt
+  component "User/Profile Service\n(FastAPI)" as User
+  component "Billing Service\n(FastAPI, Stripe SDK)" as Billing
+  component "Surgery Service\n(FastAPI)" as Surgery
+  component "Notification Worker\n(Celery + Redis + RabbitMQ)" as Notify
+}
+
+package "Data & Storage" {
+  database "PostgreSQL\n(Relational store)" as DB
+  queue "RabbitMQ / Redis Streams" as Queue
+  cache "Redis" as Redis
+  component "SMTP Provider\n(SendGrid / SES)" as SMTP
+}
+
+WebUI --> Gateway : HTTPS/REST
+StaticSite --> Gateway : HTTPS/REST
+Gateway --> Auth : HTTP
+Gateway --> Appt : HTTP
+Gateway --> User : HTTP
+Gateway --> Billing : HTTP
+Gateway --> Surgery : HTTP
+Appt --> DB : SQL (psycopg2 / asyncpg)
+@startuml ads_components
+skinparam componentStyle uml2
+
+component "React SPA\n(React, TypeScript)" as WebUI
+component "API Gateway\n(NGINX)" as Gateway
+component "Appointment Service\n(FastAPI)" as Appt
+database "PostgreSQL" as DB
+
+WebUI --> Gateway : HTTPS/REST
+Gateway --> Appt : HTTP
+Appt --> DB : SQL
+
+note right of Appt
+  Business rules:
+  - Max 5 appts/week per dentist
+  - Block bookings if unpaid bills exist
+end note
+
+@enduml

@@ -1,0 +1,138 @@
+'' Layers for ADS (Appointment & Dental Service) system - vertical layout
+@startuml layered_architecture
+skinparam componentStyle rectangle
+skinparam linetype ortho
+left to right direction
+
+' Use rectangular bands to force vertical stacking and minimize crossing
+rectangle "Presentation Layer" as Presentation #DDDDFF {
+  component "Web App (React)" as Web
+  component "Mobile App" as Mobile
+  component "Website Form" as WebForms
+}
+
+rectangle "API Layer" as API #CCEECC {
+  component "API Gateway (NGINX)" as Gateway
+  component "REST API (FastAPI)" as REST
+  component "GraphQL (optional)" as GraphQL
+}
+
+rectangle "Domain / Services" as Domain #FFEFAA {
+  component "Auth Service (JWT/OAuth2)" as Auth
+  component "Appointment Service" as ApptSvc
+  component "User/Profile Service" as UserSvc
+  component "Billing Service" as BillingSvc
+  component "Notification Worker (Celery)" as Notify
+  component "Surgery/Location Service" as SurgerySvc
+  component "Business Rules / Scheduler" as Rules
+}
+
+rectangle "Persistence" as Persist #FFDDDD {
+  database "PostgreSQL" as PG
+  component "Redis (cache/locks)" as Cache
+  component "Elasticsearch (search)" as Search
+}
+
+rectangle "Integrations & Infra" as Infra #F0F0F0 {
+  component "SMTP / Email Provider" as Email
+  component "Payment Gateway" as Payment
+  component "External IdP (OAuth)" as IdP
+  component "Monitoring / Logging" as Monitor
+}
+
+' Connections (use orthogonal routing and mostly downward/right to avoid crossing)
+Web -down-> Gateway : HTTPS
+Mobile -down-> Gateway : HTTPS
+WebForms -down-> Gateway : HTTPS
+
+Gateway -down-> REST
+REST -down-> ApptSvc
+REST -right-> Auth : auth
+REST -down-> UserSvc
+REST -down-> BillingSvc
+
+ApptSvc -down-> PG
+UserSvc -down-> PG
+BillingSvc -down-> PG
+SurgerySvc -down-> PG
+
+ApptSvc -right-> Cache : cache/locks
+ApptSvc -right-> Notify : enqueue
+Notify -right-> Email : send
+
+BillingSvc -right-> Payment : payments
+ApptSvc -right-> Rules : evaluate
+
+' Monitoring / logging as single directional to avoid back edges
+REST -right-> Monitor
+ApptSvc -right-> Monitor
+
+note bottom of Presentation
+  Notes:
+  - Vertical layout reduces arrow crossings
+  - Use DB constraints + locks to prevent race conditions
+end note
+
+@enduml
+
+package "Presentation Layer" {
+  '' Layers for ADS (Appointment & Dental Service) system
+  @startuml
+  skinparam componentStyle rectangle
+
+  package "Presentation Layer" {
+    [Web App (React)] as Web
+    [Mobile App (iOS/Android)] as Mobile
+    [Public Website Forms] as WebForms
+  }
+
+  package "API Layer" {
+    [API Gateway / Reverse Proxy (NGINX)] as Gateway
+    [REST API (FastAPI / Flask)] as REST
+    [GraphQL API (Apollo)] as GraphQL
+  }
+
+  package "Domain / Services Layer" {
+    [Auth Service (JWT/OAuth2)] as Auth
+    [Appointment Service (Python/FastAPI)] as ApptSvc
+    [User & Profile Service] as UserSvc
+    [Billing Service (Python)] as BillingSvc
+    [Notification Service (Celery / RabbitMQ)] as Notify
+    [Surgery/Location Service] as SurgerySvc
+    [Business Rules / Scheduler] as Rules
+  }
+
+  package "Persistence Layer" {
+    [Relational DB (PostgreSQL)] as PG
+    [Cache (Redis)] as Cache
+    [Search (Elasticsearch)] as Search
+  }
+
+  package "Integration & Infrastructure" {
+    [SMTP / Email Provider] as Email
+    [Payment Gateway (Stripe/PayPal)] as Payment
+    [External Identity Provider] as IdP
+    [Monitoring / Logging (Prometheus / ELK)] as Monitor
+  }
+
+  Web --> Gateway
+  Mobile --> Gateway
+  WebForms --> Gateway
+  Gateway --> REST
+  REST --> Auth
+  REST --> ApptSvc
+  REST --> UserSvc
+  REST --> BillingSvc
+  ApptSvc --> PG
+  UserSvc --> PG
+  BillingSvc --> PG
+  ApptSvc --> Cache
+  ApptSvc --> Notify
+  Notify --> Email
+  BillingSvc --> Payment
+  ApptSvc --> Rules
+  SurgerySvc --> PG
+  REST --> Search
+  Monitor <-- REST
+  Monitor <-- ApptSvc
+  @enduml

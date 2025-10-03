@@ -1,0 +1,108 @@
+' Class diagram for ADS domain
+@startuml
+hide empty members
+skinparam classAttributeIconSize 0
+
+class OfficeManager {
+  '' Class diagram for ADS domain
+  @startuml ads_classdiagram
+  hide empty members
+  skinparam classAttributeIconSize 0
+
+  class OfficeManager {
+    +id: UUID
+    +firstName: String
+    +lastName: String
+    +email: String
+    +phone: String
+    +registerDentist(d: Dentist)
+    +registerPatient(p: Patient)
+    +bookAppointment(req: AppointmentRequest): Appointment
+  }
+
+  class User {
+    +userId: UUID
+    +email: String
+    +passwordHash: String
+    +role: Role
+    +lastLogin: DateTime
+  }
+
+  class Dentist {
+    +dentistId: UUID
+    +firstName: String
+    +lastName: String
+    +phone: String
+    +email: String
+    +specialization: String
+    +isActive: Boolean
+  }
+
+  class Patient {
+    +patientId: UUID
+    +firstName: String
+    +lastName: String
+    +phone: String
+    +email: String
+    +mailingAddress: String
+    +dateOfBirth: Date
+    +hasOutstandingBill(): Boolean
+  }
+
+  class Surgery {
+    +surgeryId: UUID
+    +name: String
+    +address: String
+    +phone: String
+  }
+
+  class Appointment {
+    +appointmentId: UUID
+    +dateTime: DateTime
+    +status: AppointmentStatus
+    +createdAt: DateTime
+    +updatedAt: DateTime
+    +notes: String
+  }
+
+  class Bill {
+    +billId: UUID
+    +patientId: UUID
+    +amount: Decimal
+    +status: BillStatus
+    +issuedAt: DateTime
+    +paidAt: DateTime?
+  }
+
+  class AppointmentRequest {
+    +requestId: UUID
+    +patientId: UUID
+    +preferredDateTimes: List<DateTime>
+    +surgeryId: UUID?
+    +createdVia: String
+  }
+
+  enum AppointmentStatus {
+    SCHEDULED
+    CANCELLED
+    COMPLETED
+    PENDING
+  }
+
+  enum BillStatus {
+    UNPAID
+    PAID
+    PENDING
+  }
+
+  OfficeManager "1" -- "0..*" Dentist : registers
+  OfficeManager "1" -- "0..*" Patient : registers
+  Patient "1" -- "0..*" Appointment : requests/has
+  Dentist "1" -- "0..*" Appointment : assignedTo
+  Surgery "1" -- "0..*" Appointment : location
+  Patient "1" -- "0..*" Bill : invoices
+  Appointment "1" o-- "1" AppointmentRequest : originatedFrom
+  User <|-- OfficeManager
+  User <|-- Dentist
+  User <|-- Patient
+  @enduml
