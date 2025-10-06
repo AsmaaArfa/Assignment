@@ -1,0 +1,80 @@
+%% ADS ER Diagram (Mermaid source)
+%% Save as .mmd and render with mermaid CLI or mermaid.live
+
+erDiagram
+    APP_USER {
+        UUID id PK "user id"
+        string email
+        string password_hash
+    APP_USER {
+        id PK
+        email
+        password_hash
+        role
+        created_at
+    }
+
+    DENTIST {
+        id PK
+        first_name
+        last_name
+        phone
+        email
+        specialization
+        user_id FK
+        created_at
+    }
+
+    PATIENT {
+        id PK
+        first_name
+        last_name
+        phone
+        email
+        mailing_address
+        date_of_birth
+        user_id FK
+        created_at
+    }
+
+    SURGERY {
+        id PK
+        name
+        address
+        phone
+    }
+
+    APPOINTMENT {
+        id PK
+        dentist_id FK
+        patient_id FK
+        surgery_id FK
+        start_at
+        duration_minutes
+        status
+        confirmed
+        created_at
+        week_start
+    }
+
+    APPOINTMENT_REQUEST {
+        id PK
+        patient_id FK
+        dentist_id FK
+        source
+        preferred_time_windows
+        notes
+        status
+        requested_at
+    }
+
+    BILL {
+        id PK
+        patient_id FK
+        appointment_id FK
+        amount
+        paid
+        issued_at
+        paid_at
+    }
+            }

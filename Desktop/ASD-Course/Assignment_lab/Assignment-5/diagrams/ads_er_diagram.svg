@@ -1,0 +1,99 @@
+<!-- ADS ER Diagram SVG wrapper (contains Mermaid source as preformatted text)
+     For a true rendered graph SVG, run mermaid-cli locally:
+     npm install -g @mermaid-js/mermaid-cli
+     mmdc -i diagrams/ads_er_diagram.mmd -o diagrams/ads_er_diagram_rendered.svg
+-->
+<svg xmlns="http://www.w3.org/2000/svg" width="1200" height="800">
+  <rect width="100%" height="100%" fill="#fff" />
+  <foreignObject x="10" y="10" width="1180" height="780">
+    <body xmlns="http://www.w3.org/1999/xhtml">
+      <pre style="font-family: 'Courier New', monospace; font-size:12px; white-space:pre-wrap;">%% ADS ER Diagram (Mermaid source)
+%% Save as .mmd and render with mermaid CLI or mermaid.live
+
+erDiagram
+    APP_USER {
+        UUID id PK "user id"
+        string email
+        string password_hash
+        user_role role
+        timestamp created_at
+    }
+
+    DENTIST {
+        UUID id PK
+        string first_name
+        string last_name
+        string phone
+        string email
+        string specialization
+        UUID user_id FK
+        timestamp created_at
+    }
+
+    PATIENT {
+        UUID id PK
+        string first_name
+        string last_name
+        string phone
+        string email
+        string mailing_address
+        date date_of_birth
+        UUID user_id FK
+        timestamp created_at
+    }
+
+    SURGERY {
+        UUID id PK
+        string name
+        string address
+        string phone
+    }
+
+    APPOINTMENT {
+        UUID id PK
+        UUID dentist_id FK
+        UUID patient_id FK
+        UUID surgery_id FK
+        timestamp start_at
+        integer duration_minutes
+        appointment_status status
+        boolean confirmed
+        timestamp created_at
+        date week_start "generated"
+    }
+
+    APPOINTMENT_REQUEST {
+        UUID id PK
+        UUID patient_id FK
+        UUID dentist_id FK NULL
+        request_source source
+        text preferred_time_windows
+        text notes
+        request_status status
+        timestamp requested_at
+    }
+
+    BILL {
+        UUID id PK
+        UUID patient_id FK
+        UUID appointment_id FK NULL
+        numeric amount
+        boolean paid
+        timestamp issued_at
+        timestamp paid_at NULL
+    }
+
+    %% Relationships (cardinality)
+    APP_USER ||--o{ DENTIST : "may be"
+    APP_USER ||--o{ PATIENT : "may be"
+    DENTIST ||--o{ APPOINTMENT : "1 dentist has many appointments"
+    PATIENT ||--o{ APPOINTMENT : "1 patient has many appointments"
+    SURGERY ||--o{ APPOINTMENT : "1 surgery hosts many appointments"
+    PATIENT ||--o{ APPOINTMENT_REQUEST : "patient makes many requests"
+    DENTIST ||--o{ APPOINTMENT_REQUEST : "optional target dentist"
+    PATIENT ||--o{ BILL : "patient receives many bills"
+    APPOINTMENT ||--o{ BILL : "appointment may generate bill(s)"
+</pre>
+    </body>
+  </foreignObject>
+</svg>
